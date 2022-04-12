@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string.h>
 #include <errno.h>
+#include <vector>
 
 #include "wavfile_mono.h"
 #include "pitch_analyzer.h"
@@ -25,6 +26,7 @@ Usage:
     get_pitch --version
 
 Options:
+    -m FLOAT, --umaxnorm=FLOAT  umbral de la autocorrelación a largo plazo [default: 0.5]
     -h, --help  Show this screen
     --version   Show the version of the project
 
@@ -39,6 +41,8 @@ int main(int argc, const char *argv[]) {
 	/// \TODO 
 	///  Modify the program syntax and the call to **docopt()** in order to
 	///  add options and arguments to the program.
+  /// \HECHO 
+  ///  Argumento umaxnorm (umbral para la autocorrelacion a largo plazo)
     std::map<std::string, docopt::value> args = docopt::docopt(USAGE,
         {argv + 1, argv + argc},	// array of arguments, without the program name
         true,    // show help if requested
@@ -46,6 +50,7 @@ int main(int argc, const char *argv[]) {
 
 	std::string input_wav = args["<input-wav>"].asString();
 	std::string output_txt = args["<output-txt>"].asString();
+  float umaxnorm = stof(args["--umaxnorm"].asString());
 
   // Read input sound file
   unsigned int rate;
@@ -59,11 +64,24 @@ int main(int argc, const char *argv[]) {
   int n_shift = rate * FRAME_SHIFT;
 
   // Define analyzer
-  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::HAMMING, 50, 500);
+  PitchAnalyzer analyzer(n_len, rate, umaxnorm, PitchAnalyzer::HAMMING, 50, 500);
 
   /// \TODO
   /// Preprocess the input signal in order to ease pitch estimation. For instance,
   /// central-clipping or low pass filtering may be used.
+  /// \HECHO
+  /// Hemos progamdo central-clipping
+  for (unsigned int i = 0; i < x.size(); i++){
+    if (abs(x[i]) < 0.25){
+      x[i] = 0;
+    }
+    if (x[i] > 0.25){
+      x[i] = x[i] - 0.25;
+    }
+    if (x[i] < -0.25){
+      x[i] = x[i] + 0.25;
+    }
+  }
   
   // Iterate for each frame and save values in f0 vector
   vector<float>::iterator iX;
@@ -76,6 +94,17 @@ int main(int argc, const char *argv[]) {
   /// \TODO
   /// Postprocess the estimation in order to supress errors. For instance, a median filter
   /// or time-warping may be used.
+  /// \HECHO
+  /// Hemos implementado un filtro de mediana de orden 3
+  //vector<float> f0m;
+  //f0m[0] = f0[0];
+  //for (unsigned int j = 1; j < f0.size() - 1; j++){
+  //  float  vector[3] = {f0[j-1], f0[j], f0[j+1]};
+  //  std::sort (vector, vector + 3);
+  //  f0m.push_back(vector[1]);
+  //}
+  //f0m[f0.size() - 1] = f0[f0.size() - 1];
+  //f0 = f0m;
 
   // Write f0 contour into the output file
   ofstream os(output_txt);
