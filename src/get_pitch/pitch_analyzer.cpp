@@ -38,10 +38,17 @@ namespace upc {
 
     window.resize(frameLen);
 
+    vector<float> win(frameLen);
+    vector<unsigned int> num(frameLen);
+    for(unsigned int i = 0; i < num.size(); i++) num[i] = i;
+
     switch (win_type) {
     case HAMMING:
       /// \TODO Implement the Hamming window
+      /// \HECHO Ventana de Hamming implementada
+      for(unsigned int i = 0; i < win.size(); i++) win[i] = 0.54 - 0.46*cos(2*M_PI*num[i]/frameLen);
       window.assign(frameLen,1);
+      window = win;
       break;
     case RECT:
     default:
@@ -73,7 +80,7 @@ namespace upc {
     /// \TODO Implement a rule to decide whether the sound is voiced or not.
     /// * You can use the standard features (pot, r1norm, rmaxnorm),
     ///   or compute and use other ones.
-    // la potencia se tiene que normalizar antes de usarla para detectar tramas sonoras o sordas (r1norm o rmaxnorm)
+    //la potencia se tiene que normalizar antes de usarla para detectar tramas sonoras o sordas (r1norm o rmaxnorm)
     //si r(1) tiene un valor elevado, significa que las muestras evolucionan lentamente --> para sonidos sonoros
     //r1norm nos indica si el sonido es de bajas frecuencias o de altas frecuencias
     //si utilizamos rmaxnorm, nos basamos en el valor del primer maximo para determinar si es lo suficientemente grande como para indicar q la trama es sonora
