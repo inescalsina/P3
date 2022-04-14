@@ -88,6 +88,8 @@ Ejercicios de ampliación
 
   * Inserte un *pantallazo* en el que se vea el mensaje de ayuda del programa y un ejemplo de utilización
     con los argumentos añadidos.
+    <img width="513" alt="image" src="https://user-images.githubusercontent.com/101046951/163445418-cf4b8e20-dc32-4b15-af76-a7c10bf6ae67.png">
+
 
 - Implemente las técnicas que considere oportunas para optimizar las prestaciones del sistema de estimación
   de pitch.
@@ -108,7 +110,53 @@ Ejercicios de ampliación
 
   Incluya, a continuación, una explicación de las técnicas incorporadas al estimador. Se valorará la
   inclusión de gráficas, tablas, código o cualquier otra cosa que ayude a comprender el trabajo realizado.
+  
+  - Preprocesado: *center clipping*
+  
+  Con esta técnica recortamos la parte central de la señal, es una forma de limpiar la señal y eliminar la información irrelevante para el pitch, de esta manera se consigue que el porcesado de cada trama sea más eficiente. De las dos variaciones que existen del center clipping hemos decidido usar la variante sin ofset.
+  ```
+  float umbral_cc = ucc;
+  for (unsigned int i = 0; i < x.size(); i++){
+    if (abs(x[i]) < umbral_cc){
+      x[i] = 0;
+    }
+    if (x[i] > umbral_cc){
+      x[i] = x[i] - umbral_cc;
+    }
+    if (x[i] < - umbral_cc){
+      x[i] = x[i] + umbral_cc;
+    }
+  }
+  ```
+  ![center clipping](https://user-images.githubusercontent.com/101046951/163450008-c21576ac-9f2a-4134-a6f8-d7df841288ca.jpg)
+  En esta gráfica se puede apreciar el recorte que se le ha aplicado a la señal, sobretodo en los tramos de silencio.
 
+  Para encontar el valor adecuado para el umbral de recorte hemos definido el parametro ucc usando la librería `docopt_cpp` para comparar distintas realizaciones, este ha sido nuestro resultado:
+  <img width="737" alt="image" src="https://user-images.githubusercontent.com/101046951/163450623-3bff76cc-62a5-41c8-bb65-a44226267ac0.png">
+  
+  El umbral más eficiente para el center-clipping es 0.0065.
+  
+  
+  - Postprocesado: filtro de mediana
+  
+  Con el objetivo de corregir errores de estimación del pitch, en concreto aquellos valores del pitch que sobrepasan un margen de coherencia en comparación con sus tramas vecinas, se utiliza el filtro de mediana. Este filtro compara el pitch de una trama con sus vecinos y se queda con el valor de la mediana. Puede ser de orden 3, 5 o 7. El más eficiente es el de orden 3, que es el que hemos utilizado.
+  ```
+  vector<float> f0m(f0.size());
+  f0m = f0;
+  for (unsigned int j = 1; j < f0.size() - 1; j++){
+    vector<float> vect = {f0[j-1], f0[j], f0[j+1]};
+    sort (vect.begin(), vect.end());
+    f0m[j] = vect[1];
+  }
+  f0 = f0m;
+  ```
+  Con el filtro obtenemos un resultado de:
+  <img width="466" alt="image" src="https://user-images.githubusercontent.com/101046951/163453551-2acbee64-0f7a-41c3-93b7-92beed183f68.png">
+
+  Sin el filtro obtenemos:
+  <img width="467" alt="image" src="https://user-images.githubusercontent.com/101046951/163453712-feabed6c-4874-4378-be05-93cfee3fafb8.png">
+
+  
   También se valorará la realización de un estudio de los parámetros involucrados. Por ejemplo, si se opta
   por implementar el filtro de mediana, se valorará el análisis de los resultados obtenidos en función de
   la longitud del filtro.
