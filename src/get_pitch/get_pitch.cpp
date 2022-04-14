@@ -26,7 +26,8 @@ Usage:
     get_pitch --version
 
 Options:
-    -m FLOAT, --umaxnorm=FLOAT  umbral de la autocorrelación a largo plazo [default: 0.5]
+    -m FLOAT, --umaxnorm=FLOAT  umbral de la autocorrelación a largo plazo [default: 0.38]
+    -s FLOAT, --ucc=FLOAT  Umbral de recorte para el center-clipping [default: 0.0045]
     -h, --help  Show this screen
     --version   Show the version of the project
 
@@ -51,6 +52,7 @@ int main(int argc, const char *argv[]) {
 	std::string input_wav = args["<input-wav>"].asString();
 	std::string output_txt = args["<output-txt>"].asString();
   float umaxnorm = stof(args["--umaxnorm"].asString());
+  float ucc = stof(args["--ucc"].asString());
 
   // Read input sound file
   unsigned int rate;
@@ -71,7 +73,7 @@ int main(int argc, const char *argv[]) {
   /// central-clipping or low pass filtering may be used.
   /// \HECHO
   /// Hemos progamdo central-clipping
-  float umbral_cc = 0.005;
+  float umbral_cc = ucc;
   for (unsigned int i = 0; i < x.size(); i++){
     if (abs(x[i]) < umbral_cc){
       x[i] = 0;
@@ -99,14 +101,14 @@ int main(int argc, const char *argv[]) {
   /// or time-warping may be used.
   /// \HECHO
   /// Hemos implementado un filtro de mediana de orden 3
-  //vector<float> f0m(f0.size());
-  //f0m = f0;
-  //for (unsigned int j = 1; j < f0.size() - 1; j++){
-  //  float  vector[3] = {f0[j-1], f0[j], f0[j+1]};
-  //  std::sort (vector, vector + 3);
-  //  f0m.push_back(vector[1]);
-  //}
-  //f0 = f0m;
+  vector<float> f0m(f0.size());
+  f0m = f0;
+  for (unsigned int j = 1; j < f0.size() - 1; j++){
+    vector<float> vect = {f0[j-1], f0[j], f0[j+1]};
+    sort (vect.begin(), vect.end());
+    f0m[j] = vect[1];
+  }
+  f0 = f0m;
 
   // Write f0 contour into the output file
   ofstream os(output_txt);
