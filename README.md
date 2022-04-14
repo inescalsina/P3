@@ -151,9 +151,11 @@ Ejercicios de ampliación
   f0 = f0m;
   ```
   Con el filtro obtenemos un resultado de:
+  
   <img width="466" alt="image" src="https://user-images.githubusercontent.com/101046951/163453551-2acbee64-0f7a-41c3-93b7-92beed183f68.png">
 
   Sin el filtro obtenemos:
+  
   <img width="467" alt="image" src="https://user-images.githubusercontent.com/101046951/163453712-feabed6c-4874-4378-be05-93cfee3fafb8.png">
 
   
