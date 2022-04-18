@@ -48,6 +48,19 @@ unsigned int lag = iRMax - r.begin();
 ```
 
    * Implemente la regla de decisión sonoro o sordo e inserte el código correspondiente.
+```
+  bool PitchAnalyzer::unvoiced(float pot, float r1norm, float rmaxnorm) const {
+    if(rmaxnorm>umaxnorm) return false;
+    return true;
+  }
+```
+
+  La regla de decisión que hemos aplicado consiste en comparar el cociente (rmaxnorm) entre el valor de la autocorrelación en 0 (la potencia de la trama) y el valor de la autocorrelación en el pitch con un umbral que hemos introducido. Esta hipotesis se deduce a partir de que para tramas sonoras, la autocorrelación es periodica, y en el lugar donde esta el pitch habrá un máximo, mientras que para tramas sordas, la autocorrelación no es periodica y no hay ningún máximo porque no hay pitch.
+     
+  El valor más eficiente del umbral lo hemos encontrado comparando distintas realizaciones:
+  <img width="735" alt="image" src="https://user-images.githubusercontent.com/101046951/163455676-ac676dcc-9696-4517-8ddb-ea294f56631a.png">
+
+  El umbral más eficiente es 0.38
 
 - Una vez completados los puntos anteriores, dispondrá de una primera versión del estimador de pitch. El 
   resto del trabajo consiste, básicamente, en obtener las mejores prestaciones posibles con él.
@@ -88,6 +101,7 @@ Ejercicios de ampliación
 
   * Inserte un *pantallazo* en el que se vea el mensaje de ayuda del programa y un ejemplo de utilización
     con los argumentos añadidos.
+    
     <img width="513" alt="image" src="https://user-images.githubusercontent.com/101046951/163445418-cf4b8e20-dc32-4b15-af76-a7c10bf6ae67.png">
 
 
@@ -157,6 +171,12 @@ Ejercicios de ampliación
   Sin el filtro obtenemos:
   
   <img width="467" alt="image" src="https://user-images.githubusercontent.com/101046951/163453712-feabed6c-4874-4378-be05-93cfee3fafb8.png">
+  
+  Si ampliamos la dimensión del filtor a 5, obtenemos el siguiente score:
+  
+  <img width="466" alt="image" src="https://user-images.githubusercontent.com/101046951/163460832-51d8f21c-ea68-4dbb-ac9a-161a5cf709ca.png">
+
+  Es mejor no utilizar filtro a utilizar un filtro de orden 5, no obstante la mejor opción es el filtro de orden 3.
 
   
   También se valorará la realización de un estudio de los parámetros involucrados. Por ejemplo, si se opta
