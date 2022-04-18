@@ -95,6 +95,9 @@ unsigned int lag = iRMax - r.begin();
   * Optimice los parámetros de su sistema de estimación de pitch e inserte una tabla con las tasas de error
     y el *score* TOTAL proporcionados por `pitch_evaluate` en la evaluación de la base de datos 
 	`pitch_db/train`..
+	
+	<img width="297" alt="image" src="https://user-images.githubusercontent.com/101046951/163848706-537105e5-ccce-4bc8-a27c-2ff3f2e65961.png">
+
 
 Ejercicios de ampliación
 ------------------------
