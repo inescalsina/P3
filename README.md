@@ -55,7 +55,7 @@ unsigned int lag = iRMax - r.begin();
   }
 ```
 
-  La regla de decisión que hemos aplicado consiste en comparar el cociente (rmaxnorm) entre el valor de la autocorrelación en 0 (la potencia de la trama) y el valor de la autocorrelación en el pitch con un umbral que hemos introducido. Este hipotesis se deduce a que para tramas sonoras, la autocorrelación es periodica, y en el lugar donde esta el pitch habrá un máximo, mientras que para tramas sordas, la autocorrelación no es periodica y no hay ningún máximo porque no hay pitch.
+  La regla de decisión que hemos aplicado consiste en comparar el cociente (rmaxnorm) entre el valor de la autocorrelación en 0 (la potencia de la trama) y el valor de la autocorrelación en el pitch con un umbral que hemos introducido. Esta hipotesis se deduce a partir de que para tramas sonoras, la autocorrelación es periodica, y en el lugar donde esta el pitch habrá un máximo, mientras que para tramas sordas, la autocorrelación no es periodica y no hay ningún máximo porque no hay pitch.
      
   El valor más eficiente del umbral lo hemos encontrado comparando distintas realizaciones:
   <img width="735" alt="image" src="https://user-images.githubusercontent.com/101046951/163455676-ac676dcc-9696-4517-8ddb-ea294f56631a.png">
