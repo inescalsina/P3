@@ -26,8 +26,9 @@ Usage:
     get_pitch --version
 
 Options:
-    -m FLOAT, --umaxnorm=FLOAT  umbral de la autocorrelación a largo plazo [default: 0.38]
+    -m FLOAT, --umaxnorm=FLOAT  Umbral de autocorrelación a largo plazo [default: 0.38]
     -s FLOAT, --ucc=FLOAT  Umbral de recorte para el center-clipping [default: 0.0045]
+    -n FLOAT, --u1norm=FLOAT  Umbral de autocorrelación a corto plazo [default: 0.3]
     -h, --help  Show this screen
     --version   Show the version of the project
 
@@ -53,6 +54,7 @@ int main(int argc, const char *argv[]) {
 	std::string output_txt = args["<output-txt>"].asString();
   float umaxnorm = stof(args["--umaxnorm"].asString());
   float ucc = stof(args["--ucc"].asString());
+  float u1norm = stof(args["--u1norm"].asString());
 
   // Read input sound file
   unsigned int rate;
@@ -66,7 +68,7 @@ int main(int argc, const char *argv[]) {
   int n_shift = rate * FRAME_SHIFT;
 
   // Define analyzer
-  PitchAnalyzer analyzer(n_len, rate, umaxnorm, PitchAnalyzer::HAMMING, 50, 500);
+  PitchAnalyzer analyzer(n_len, rate, umaxnorm, u1norm, PitchAnalyzer::RECT, 50, 500);
 
   /// \TODO
   /// Preprocess the input signal in order to ease pitch estimation. For instance,

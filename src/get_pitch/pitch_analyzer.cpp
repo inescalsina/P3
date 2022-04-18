@@ -48,7 +48,7 @@ namespace upc {
       /// \HECHO Ventana de Hamming implementada
       for(unsigned int i = 0; i < win.size(); i++) win[i] = 0.54 - 0.46*cos(2*M_PI*num[i]/frameLen);
       window.assign(frameLen,1);
-      //window = win;
+      window = win;
       break;
     case RECT:
     default:
