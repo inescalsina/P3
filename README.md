@@ -72,6 +72,9 @@ unsigned int lag = iRMax - r.begin();
 	    principales candidatos para determinar la sonoridad de la voz: el nivel de potencia de la señal
 		(r[0]), la autocorrelación normalizada de uno (r1norm = r[1] / r[0]) y el valor de la
 		autocorrelación en su máximo secundario (rmaxnorm = r[lag] / r[0]).
+		
+		![image](https://user-images.githubusercontent.com/101046951/163844753-ca558b5c-70e4-4829-8f65-b7629b2d806e.png)
+
 
 		Puede considerar, también, la conveniencia de usar la tasa de cruces por cero.
 
@@ -81,6 +84,9 @@ unsigned int lag = iRMax - r.begin();
       - Use el estimador de pitch implementado en el programa `wavesurfer` en una señal de prueba y compare
 	    su resultado con el obtenido por la mejor versión de su propio sistema.  Inserte una gráfica
 		ilustrativa del resultado de ambos estimadores.
+		
+		![image](https://user-images.githubusercontent.com/101046951/163845673-27f9480d-6d19-44e0-a26a-4a542ba399d7.png)
+
      
 		Aunque puede usar el propio Wavesurfer para obtener la representación, se valorará
 	 	el uso de alternativas de mayor calidad (particularmente Python).
