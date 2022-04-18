@@ -85,7 +85,8 @@ unsigned int lag = iRMax - r.begin();
 	    su resultado con el obtenido por la mejor versión de su propio sistema.  Inserte una gráfica
 		ilustrativa del resultado de ambos estimadores.
 		
-		![image](https://user-images.githubusercontent.com/101046951/163845673-27f9480d-6d19-44e0-a26a-4a542ba399d7.png)
+		![image](https://user-images.githubusercontent.com/101046951/163847044-3f7be367-9c04-4e79-ad80-3bf1b2b7a775.png)
+
 
      
 		Aunque puede usar el propio Wavesurfer para obtener la representación, se valorará
