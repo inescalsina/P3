@@ -101,6 +101,7 @@ Ejercicios de ampliación
 
   * Inserte un *pantallazo* en el que se vea el mensaje de ayuda del programa y un ejemplo de utilización
     con los argumentos añadidos.
+    
     <img width="513" alt="image" src="https://user-images.githubusercontent.com/101046951/163445418-cf4b8e20-dc32-4b15-af76-a7c10bf6ae67.png">
 
 
